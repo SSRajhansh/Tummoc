@@ -1,0 +1,5 @@
+package com.example.BestMetroRoute.model;
+
+public class StationID {
+
+}

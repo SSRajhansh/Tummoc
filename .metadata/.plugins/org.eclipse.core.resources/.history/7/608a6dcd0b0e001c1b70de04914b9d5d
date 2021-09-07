@@ -1,0 +1,37 @@
+package com.example.BestMetroRoute.model;
+
+import javax.persistence.Entity;
+
+@Entity
+public class MetroLines {
+	
+	int stationID;
+	String lineNum;
+	
+	public MetroLines() {
+	}
+	
+	public MetroLines(int station_ID, String line_num) {
+		this.stationID = station_ID;
+		this.lineNum = line_num;
+	}
+
+	public int getStation_ID() {
+		return stationID;
+	}
+
+	public void setStation_ID(int station_ID) {
+		this.stationID = station_ID;
+	}
+
+	public String getLine_num() {
+		return lineNum;
+	}
+
+	public void setLine_num(String line_num) {
+		this.lineNum = line_num;
+	}
+	
+	
+
+}

@@ -1,0 +1,67 @@
+package com.example.BestMetroRoute.services;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.BestMetroRoute.model.MetroLines;
+import com.example.BestMetroRoute.model.MetroStations;
+import com.example.BestMetroRoute.model.TrainTiming;
+import com.example.BestMetroRoute.repositories.MetroLinesRepository;
+import com.example.BestMetroRoute.repositories.MetroStationsRepository;
+import com.example.BestMetroRoute.repositories.TrainTimingRepository;
+
+@Service
+public class RouteService {
+	
+	private List<TrainTiming> routeList = null;
+	
+	@Autowired
+	private MetroStationsRepository metroStationsRepository;
+	
+	@Autowired
+	private MetroLinesRepository metroLinesRepository;
+	
+	@Autowired
+	private TrainTimingRepository trainTimingRepository;
+
+	public String method(String sourceLocation, String destinationLocation, LocalTime currentTime) {
+		float sourceLat = Float.parseFloat(sourceLocation.split(",",2)[0]);
+		float sourceLon = Float.parseFloat(sourceLocation.split(",",2)[1]);
+		float destLat = Float.parseFloat(destinationLocation.split(",",2)[0]);
+		float destLon = Float.parseFloat(destinationLocation.split(",",2)[1]);
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("hh:mm");
+		
+		int sourceStationId = getMetroStation(sourceLat, sourceLon).getStationID();
+		int destStationId = getMetroStation(destLat, destLon).getStationID();		
+		
+		List<MetroLines> sourceLines= getMetroLines(sourceStationId); 
+		List<MetroLines> destLines= getMetroLines(destStationId); 
+		
+		return "sourceLocation = " + sourceLat + "N " + sourceLon + "E "
+				+"\ndestinationLocation = " + destLat + "N " + destLon + "E " 
+				+"\ncurrentTime = "+ currentTime.format(format) ;
+	}
+	
+	private MetroStations getMetroStation(float latitude, float longitude) {		
+		return metroStationsRepository.findByLatitudeAndLongitude(latitude, longitude);
+	}
+	
+	private List<MetroLines> getMetroLines(int stationId) {		
+		return metroLinesRepository.findByStationId(stationId);
+	}
+	
+	private String checkOnSameLine(List<MetroLines> sourceLines, List<MetroLines> destLines) {	
+		for(int i = 0; i < sourceLines.size(); i++) {
+			for(int j = 0; j < destLines.size(); j++) {
+				if(sourceLines.get(i).getLineNum().equals(destLines.get(j).getLineNum())) {
+					return sourceLines.get(i).getLineNum();
+				}
+			}
+		}
+		return null;
+	}
+}

@@ -1,0 +1,37 @@
+package com.example.BestMetroRoute.Controller;
+
+import java.time.LocalTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.BestMetroRoute.services.RouteService;
+
+@RestController
+public class RequestController {
+	
+	@Autowired
+	RouteService service;
+	
+	@RequestMapping("/")
+	public String indexpage() {
+		return "Hello to this project";
+	}
+	
+	@RequestMapping(value = {"/{sourceLoc}/{destLoc}", "/{sourceLoc}/{destLoc}/{time}"})
+	public String method(@PathVariable("sourceLoc") String sourceLoc,
+			@PathVariable("destLoc") String destLoc,
+			@PathVariable(required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalTime time) {
+		
+		
+		if (time == null) {
+			time = LocalTime.now();
+		}		
+		String result = service.method(source, dest, time);		
+		return result;
+	}
+
+}

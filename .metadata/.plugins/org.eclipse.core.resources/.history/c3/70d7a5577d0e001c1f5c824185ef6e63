@@ -1,0 +1,61 @@
+package com.example.BestMetroRoute.model;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "route.metro_lines")
+public class MetroLines {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "s_no")
+	int SerialNo;
+	@Column(name = "station_ID")
+	int stationId;
+	@Column(name = "line_num")
+	String lineNum;
+	
+	public MetroLines() {
+	}
+	
+	public MetroLines(int stationId, String lineNum) {
+		this.stationId = stationId;
+		this.lineNum = lineNum;
+	}	
+
+	public int getSerialNo() {
+		return SerialNo;
+	}
+	
+
+	public void setSerialNo(int serialNo) {
+		SerialNo = serialNo;
+	}
+
+	public int getStationId() {
+		return stationId;
+	}
+
+	public void setStationId(int stationId) {
+		this.stationId = stationId;
+	}
+
+	public String getLineNum() {
+		return lineNum;
+	}
+
+	public void setLineNum(String lineNum) {
+		this.lineNum = lineNum;
+	}
+	
+	
+
+}

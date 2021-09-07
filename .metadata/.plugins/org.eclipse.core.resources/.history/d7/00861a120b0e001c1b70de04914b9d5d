@@ -1,0 +1,10 @@
+package com.example.BestMetroRoute.model;
+
+public class MetroStations {
+	
+	int station_ID;
+	int station_seq;
+	String station_name;
+	
+
+}

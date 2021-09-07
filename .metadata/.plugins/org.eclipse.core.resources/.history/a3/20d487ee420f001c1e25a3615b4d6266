@@ -1,0 +1,105 @@
+package com.example.BestMetroRoute.services;
+
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
+import org.springframework.stereotype.Component;
+ 
+@Component
+public class Excel2DatabaseTest {
+ 
+    public void insert_data() {
+    	String jdbcURL = "jdbc:postgresql://localhost:5432/routes";
+        String username = "postgres";
+        String password = "root";
+ 
+        String excelFilePath = "testxl2.xlsx"; 
+        int batchSize = 20; 
+        Connection connection = null;
+ 
+        try {
+            long start = System.currentTimeMillis();
+             
+            FileInputStream inputStream = new FileInputStream(excelFilePath);
+ 
+            Workbook workbook = new XSSFWorkbook(inputStream);
+            int noOfSheet = workbook.getNumberOfSheets();
+            connection = DriverManager.getConnection(jdbcURL, username, password);
+            connection.setAutoCommit(false);
+  
+            String sql = "INSERT INTO metro_stations (line_num, station_seq, station_name, latitude, longitude) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql); 
+            
+            for(int i = 0; i < noOfSheet; i++) {
+            	Sheet sheet = workbook.getSheetAt(i);
+            	
+            	int station_seq = 1;            	
+                int count = 0;
+                Iterator<Row> rowIterator = sheet.iterator();
+                
+                rowIterator.next(); 
+                while (rowIterator.hasNext()) {
+                    Row nextRow = rowIterator.next();
+                    Iterator<Cell> cellIterator = nextRow.cellIterator();
+     
+                    while (cellIterator.hasNext()) {
+                        Cell nextCell = cellIterator.next();
+     
+                        int columnIndex = nextCell.getColumnIndex();
+     
+                        switch (columnIndex) {
+                        case 0:
+                        	String line_num = sheet.getSheetName();
+                            statement.setString(1, line_num);
+                            statement.setInt(2, station_seq++);
+                            
+                            String station_name = nextCell.getStringCellValue();
+                            statement.setString(3, station_name);
+                            break;
+                        case 1:
+                        	float latitude = (float)nextCell.getNumericCellValue();
+                            statement.setDouble(4, latitude);
+                            break;
+                        case 2:
+                        	float longitude = (float)nextCell.getNumericCellValue();
+                            statement.setDouble(5, longitude);
+                            break;
+                        }
+     
+                    }
+                     
+                    statement.addBatch();
+                     
+                    if (count % batchSize == 0) {
+                        statement.executeBatch();
+                    }              
+     
+                }
+            	
+            }
+            
+            workbook.close();
+             
+            // execute the remaining queries
+            statement.executeBatch();
+  
+            connection.commit();
+            connection.close();
+             
+            long end = System.currentTimeMillis();
+            System.out.printf("Import done in %d ms\n", (end - start));
+             
+        } catch (IOException ex1) {
+            System.out.println("Error reading file");
+            ex1.printStackTrace();
+        } catch (SQLException ex2) {
+            System.out.println("Database error");
+            ex2.printStackTrace();
+        }
+ 
+    }
+    
+}

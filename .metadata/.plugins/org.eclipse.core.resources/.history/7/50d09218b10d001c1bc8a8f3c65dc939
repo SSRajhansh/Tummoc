@@ -1,0 +1,23 @@
+package com.example.BestMetroRoute.services;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+public class RouteService {
+
+	public String method(float sourceLocation, float destinationLocation, LocalTime currentTime) {
+		String strTime= null;
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("hh:mm"); 	
+		if (currentTime == null) {
+			LocalTime localtime = LocalTime.now();			   
+			strTime = localtime.format(format); 
+		} else {
+			strTime = currentTime.format(format);
+		}
+		
+		
+		return "";
+	}
+	
+	
+}

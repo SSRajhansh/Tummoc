@@ -1,0 +1,61 @@
+package com.example.BestMetroRoute.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+@Entity
+public class TrainTiming {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "s_no")
+	int SerialNo;
+	@Column(name = "Station_ID")
+	int stationID;
+	@Column(name = "train_id")
+	String trainId;
+	@Column(name = "time")
+	String time;
+		
+	public TrainTiming() {
+	}
+		
+	public TrainTiming(int stationID, String trainId, String time) {
+		this.stationID = stationID;
+		this.trainId = trainId;
+		this.time = time;
+	}
+	
+	public int getSerialNo() {
+		return SerialNo;
+	}
+
+	public void setSerialNo(int serialNo) {
+		SerialNo = serialNo;
+	}
+
+	public int getStationId() {
+		return stationID;
+	}
+	public void setStationId(int stationID) {
+		this.stationID = stationID;
+	}
+	public String getTrainId() {
+		return trainId;
+	}
+	public void setTrainId(String trainId) {
+		this.trainId = trainId;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	
+	
+}

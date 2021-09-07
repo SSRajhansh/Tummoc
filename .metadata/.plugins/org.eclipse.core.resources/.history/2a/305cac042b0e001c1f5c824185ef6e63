@@ -1,0 +1,120 @@
+package com.example.BestMetroRoute.services;
+
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
+import org.springframework.stereotype.Component;
+ 
+@Component
+public class Excel2Database {
+ 
+    public void insert_data() {
+    	String jdbcURL = "jdbc:postgresql://localhost:5432/routes";
+        String username = "postgres";
+        String password = "root";
+ 
+        String excelFilePath = "testxl2.xlsx"; 
+        int batchSize = 20; 
+        Connection connection = null;
+ 
+        try {
+            long start = System.currentTimeMillis();
+             
+            FileInputStream inputStream = new FileInputStream(excelFilePath);
+ 
+            Workbook workbook = new XSSFWorkbook(inputStream);
+            int noOfSheet = workbook.getNumberOfSheets();
+            connection = DriverManager.getConnection(jdbcURL, username, password);
+            connection.setAutoCommit(false);
+            
+            int stationId = 1;            
+  
+            String sql1 = "INSERT INTO route.metro_stations (station_ID, station_seq, station_name, latitude, longitude) VALUES (?, ?, ?, ?, ?)";
+            String sql2 = "INSERT INTO route.metro_lines (station_ID, line_num) VALUES (?, ?)";
+            String sql3 = "INSERT INTO route.train_timing (station_ID, train_id, time) VALUES (?, ?, ?)";
+            PreparedStatement statement1 = connection.prepareStatement(sql1); 
+            PreparedStatement statement2 = connection.prepareStatement(sql2);
+            PreparedStatement statement3 = connection.prepareStatement(sql3);
+            
+            for(int i = 0; i < noOfSheet; i++) {
+            	Sheet sheet = workbook.getSheetAt(i);
+            	
+            	int stationSeq = 1;            	
+                int count = 0;
+                Iterator<Row> rowIterator = sheet.iterator();
+                
+                rowIterator.next(); 
+                while (rowIterator.hasNext()) {
+                    Row nextRow = rowIterator.next();
+                    Iterator<Cell> cellIterator = nextRow.cellIterator();
+                    int train = 1;
+     
+                    while (cellIterator.hasNext()) {
+                        Cell nextCell = cellIterator.next();
+     
+                        int columnIndex = nextCell.getColumnIndex();     
+                        switch (columnIndex) {
+                        case 0:
+                        	statement1.setInt(1, stationId);
+                            statement2.setInt(1, stationId);
+                            statement3.setInt(1, stationId);
+                        	statement1.setInt(2, stationSeq++);
+                        	
+                            String station_name = nextCell.getStringCellValue();
+                            statement1.setString(3, station_name);  
+                            
+                            String lineNum = sheet.getSheetName();
+                            statement2.setString(2, lineNum);
+                            break;
+                        case 1:
+                        	String loc = nextCell.getStringCellValue();
+                        	float latitude = Float.parseFloat(loc.split(", ",2)[0]);
+                    		float longitude = Float.parseFloat(loc.split(", ",2)[1]);
+                            statement1.setDouble(4, latitude);
+                            statement1.setDouble(5, longitude);
+                            break;
+                        default:
+                        	String time = nextCell.getStringCellValue();
+                        	String trainId = "train" + train++;
+                        	statement3.setString(3, trainId);
+                            statement3.setString(3, time);
+                            break;
+                        }
+     
+                    }
+                     
+                    statement.addBatch();
+                     
+                    if (count % batchSize == 0) {
+                        statement.executeBatch();
+                    }              
+     
+                }
+            	
+            }
+            
+            workbook.close();
+             
+            // execute the remaining queries
+            statement.executeBatch();
+  
+            connection.commit();
+            connection.close();
+             
+            long end = System.currentTimeMillis();
+            System.out.printf("Import done in %d ms\n", (end - start));
+             
+        } catch (IOException ex1) {
+            System.out.println("Error reading file");
+            ex1.printStackTrace();
+        } catch (SQLException ex2) {
+            System.out.println("Database error");
+            ex2.printStackTrace();
+        }
+ 
+    }
+    
+}

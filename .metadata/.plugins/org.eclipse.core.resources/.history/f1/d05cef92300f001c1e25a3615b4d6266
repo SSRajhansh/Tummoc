@@ -1,0 +1,27 @@
+package com.example.BestMetroRoute.model;
+
+import javax.persistence.Embeddable;
+
+@Embeddable
+public class StationID {
+	
+	int stationId;
+
+	public StationID(int stationId) {
+		this.stationId = stationId;
+	}
+
+	public StationID() {
+	}
+
+	public int getStationId() {
+		return stationId;
+	}
+
+	public void setStationId(int stationId) {
+		this.stationId = stationId;
+	}
+	
+	
+
+}

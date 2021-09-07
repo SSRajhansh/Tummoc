@@ -1,0 +1,11 @@
+package com.example.BestMetroRoute.repositories;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.BestMetroRoute.model.MetroStations;
+@Repository
+public interface MetroStationsRepository extends CrudRepository<MetroStations, Integer>  {
+
+	MetroStations findByLatitudeAndLongitude(float latitude, float longitude);
+}

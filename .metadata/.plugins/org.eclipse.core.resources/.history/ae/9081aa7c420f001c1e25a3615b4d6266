@@ -1,0 +1,13 @@
+package com.example.BestMetroRoute.repositories;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+
+//import com.example.BestMetroRoute.model.MetroLines;
+import com.example.BestMetroRoute.model.MetroLines1;
+
+public interface MetroLinesRepository extends CrudRepository<MetroLines1, Integer> {
+
+	List<MetroLines1> findByStationId(int stationId);
+}

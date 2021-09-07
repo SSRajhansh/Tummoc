@@ -1,0 +1,46 @@
+package com.example.BestMetroRoute.services;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.BestMetroRoute.model.TrainTiming;
+import com.example.BestMetroRoute.repositories.MetroLinesRepository;
+import com.example.BestMetroRoute.repositories.MetroStationsRepository;
+import com.example.BestMetroRoute.repositories.TrainTimingRepository;
+
+@Service
+public class RouteService {
+	
+	private List<TrainTiming> routeList = null;
+	
+	@Autowired
+	private MetroStationsRepository metroStationsRepository;
+	
+	@Autowired
+	private MetroLinesRepository metroLinesRepository;
+	
+	@Autowired
+	private TrainTimingRepository trainTimingRepository;
+
+	public String method(String sourceLocation, String destinationLocation, LocalTime currentTime) {
+		float sourceLat = Float.parseFloat(sourceLocation.split(",",2)[0]);
+		float sourceLon = Float.parseFloat(sourceLocation.split(",",2)[1]);
+		float destLat = Float.parseFloat(destinationLocation.split(",",2)[0]);
+		float destLon = Float.parseFloat(destinationLocation.split(",",2)[1]);
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("hh:mm");
+		
+		
+		return "sourceLocation = " + sourceLat + "N " + sourceLon + "E "
+				+"\ndestinationLocation = " + destLat + "N " + destLon + "E " 
+				+"\ncurrentTime = "+ currentTime.format(format) ;
+	}
+	
+	private String getMetroStation(float sourceLatitude, float sourceLongitude, float destinationLatitude, float destinationLongitude) {
+		
+		return metroStationsRepository
+	}
+}

@@ -1,0 +1,58 @@
+package com.example.BestMetroRoute.model;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+@Entity
+public class TrainTiming {
+
+	@Id
+	@Column(name = "s_no")
+	int SerialNo;
+	@Column(name = "station_ID")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "station_ID")	
+	int stationID;
+	@Column(name = "train_id")
+	String trainId;
+	@Column(name = "time")
+	String time;
+		
+	public TrainTiming() {
+	}
+		
+	public TrainTiming(int stationID, String trainId, String time) {
+		this.stationID = stationID;
+		this.trainId = trainId;
+		this.time = time;
+	}
+	
+	public int getSerialNo() {
+		return SerialNo;
+	}
+
+	public int getStationId() {
+		return stationID;
+	}
+	public void setStationId(int stationID) {
+		this.stationID = stationID;
+	}
+	public String getTrainId() {
+		return trainId;
+	}
+	public void setTrainId(String trainId) {
+		this.trainId = trainId;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	
+	
+}

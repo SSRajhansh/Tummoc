@@ -1,0 +1,18 @@
+package com.example.BestMetroRoute.services;
+
+import java.time.LocalTime;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class RouteService {
+
+	public String method(float sourceLocation, float destinationLocation, LocalTime currentTime) {
+		
+		return "sourceLocation = " + sourceLocation 
+				+"\ndestinationLocation = " + destinationLocation 
+				+"\ncurrentTime = "+ currentTime ;
+	}
+	
+	
+}

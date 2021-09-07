@@ -1,0 +1,24 @@
+package com.example.BestMetroRoute;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.example.BestMetroRoute.services.Excel2Database;
+import com.example.BestMetroRoute.services.Excel2DatabaseTest;
+
+@SpringBootApplication
+@EnableAutoConfiguration
+public class BestMetroRouteApplication {
+	
+	
+
+	public static void main(String[] args) {
+		SpringApplication.run(BestMetroRouteApplication.class, args);
+
+		Excel2Database excel2Database = new Excel2Database();
+		excel2Database.insert_data();
+	}
+
+}

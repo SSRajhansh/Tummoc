@@ -1,0 +1,40 @@
+package com.example.BestMetroRoute.model;
+
+import javax.persistence.Entity;
+
+@Entity
+public class TrainTiming {
+
+	int stationID;
+	String trainId;
+	String time;
+		
+	public TrainTiming() {
+	}
+		
+	public TrainTiming(int stationID, String trainId, String time) {
+		this.stationID = stationID;
+		this.trainId = trainId;
+		this.time = time;
+	}
+	public int getStation_ID() {
+		return stationID;
+	}
+	public void setStation_ID(int stationID) {
+		this.stationID = stationID;
+	}
+	public String getTrain_id() {
+		return trainId;
+	}
+	public void setTrain_id(String trainId) {
+		this.trainId = trainId;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	
+	
+}

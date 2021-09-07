@@ -1,0 +1,55 @@
+package com.example.BestMetroRoute.model;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "metro_lines")
+public class MetroLines {
+	
+	@Id
+	@Column(name = "s_no")
+	int SerialNo;
+	@Column(name = "station_ID")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "station_ID")
+	int stationId;
+	@Column(name = "line_num")
+	String lineNum;
+	
+	public MetroLines() {
+	}
+	
+	public MetroLines(int stationID, String lineNum) {
+		this.stationId = stationID;
+		this.lineNum = lineNum;
+	}	
+
+	public int getSerialNo() {
+		return SerialNo;
+	}
+
+	public int getStation_ID() {
+		return stationId;
+	}
+
+	public void setStation_ID(int stationID) {
+		this.stationId = stationID;
+	}
+
+	public String getLine_num() {
+		return lineNum;
+	}
+
+	public void setLine_num(String lineNum) {
+		this.lineNum = lineNum;
+	}
+	
+	
+
+}

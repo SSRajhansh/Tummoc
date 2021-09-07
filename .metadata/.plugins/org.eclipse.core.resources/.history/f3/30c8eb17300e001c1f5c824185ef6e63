@@ -1,0 +1,78 @@
+package com.example.BestMetroRoute.model;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+@Entity
+public class MetroStations {
+	
+	@Id
+	@Column(name = "station_ID")
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "station", cascade = CascadeType.ALL)
+	int stationID;
+	@Column(name = "station_seq")
+	int stationSeq;
+	@Column(name = "station_name")
+	String stationName;
+	@Column(name = "latitude")
+	double latitude;
+	@Column(name = "longitude")
+	double longitude;
+	
+	public MetroStations() {
+	}
+
+	public MetroStations(int stationID, int stationSeq, String stationName, double latitude, double longitude) {
+		this.stationID = stationID;
+		this.stationSeq = stationSeq;
+		this.stationName = stationName;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}	
+
+	public int getStationID() {
+		return stationID;
+	}
+
+	public void setStationID(int stationID) {
+		this.stationID = stationID;
+	}
+
+	public int getStationSeq() {
+		return stationSeq;
+	}
+
+	public void setStationSeq(int stationSeq) {
+		this.stationSeq = stationSeq;
+	}
+
+	public String getStationName() {
+		return stationName;
+	}
+
+	public void setStationName(String stationName) {
+		this.stationName = stationName;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+	
+}
